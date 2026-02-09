@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center mb-4">My Hobby Progress</h1>
+        <div>
+            <a href="{{ url_for('reports', type='weekly') }}" class="btn btn-info me-2">
+                <i class="fas fa-chart-line"></i> View Reports
+            </a>
+            <span class="me-3">Welcome, {{ current_user.username }}!</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% include 'reminders.html' %}
+
+    <div class="text-end mb-3">
+        <a href="{{ url_for('add_hobby') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Track New Hobby
+        </a>
+    </div>
+    
+    <div class="row">
+        {% for hobby in hobbies %}
+        <div class="col-md-4 mb-4">
+            <div class="card hobby-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title">{{ hobby.name }}</h5>
+                        <span class="badge bg-primary">Level {{ hobby.level }}</span>
+                    </div>
+                    
+                    <div class="category-badge mb-2">
+                        <span class="badge bg-info">{{ hobby.category }}</span>
+                    </div>
+                    
+                    <div class="streak-info mb-3">
+                        <i class="fas fa-fire text-danger"></i>
+                        <span class="streak-count">{{ hobby.streak }} day streak</span>
+                    </div>
+                    
+                    <div class="progress mb-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" 
+                             style="width: {{ hobby.progress }}%"
+                             aria-valuenow="{{ hobby.progress }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                            {{ hobby.progress|round }}% to next level
+                        </div>
+                    </div>
+                    
+                    <div class="goal-section mb-3">
+                        <i class="fas fa-bullseye text-success"></i>
+                        <span class="goal-text">Goal: {{ hobby.goal }}</span>
+                    </div>
+                    
+                    <div class="target-days mb-3">
+                        <i class="fas fa-calendar-check text-primary"></i>
+                        <span>Target: {{ hobby.target_days }} days/week</span>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <form action="{{ url_for('practice_hobby', id=hobby.id) }}" method="POST" class="flex-grow-1">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-check"></i> Mark as Practiced
+                            </button>
+                        </form>
+                        <form action="{{ url_for('delete_hobby', id=hobby.id) }}" method="POST" 
+                              onsubmit="return confirm('Are you sure you want to delete this hobby?');">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Progress Reports</h1>
+        <div>
+            <span class="me-3">Welcome, {{ current_user.username }}!</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Report Navigation -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link {% if report_type == 'weekly' %}active{% endif %}" href="{{ url_for('reports', type='weekly') }}">
+                <i class="fas fa-calendar-week"></i> Weekly Report
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if report_type == 'monthly' %}active{% endif %}" href="{{ url_for('reports', type='monthly') }}">
+                <i class="fas fa-calendar-alt"></i> Monthly Report
+            </a>
+        </li>
+        <li class="nav-item ms-auto">
+            <a class="nav-link" href="{{ url_for('index') }}">
+                <i class="fas fa-home"></i> Back to Dashboard
+            </a>
+        </li>
+    </ul>
+
+    <!-- Report Content -->
+    <div class="row">
+        <!-- Summary Section -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    {{ report.summary_html | safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    {{ report.calendar_html | safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    {{ report.chart_html | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

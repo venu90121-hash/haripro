@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Challenges & Competitions</h2>
+    
+    <div class="mb-4">
+        <a href="{{ url_for('create_challenge') }}" class="btn btn-primary">Create New Challenge</a>
+        <a href="{{ url_for('leaderboard') }}" class="btn btn-info">View Leaderboard</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Global Challenges</h3>
+            <div class="list-group">
+                {% for challenge in global_challenges %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ challenge.title }}</h5>
+                    <p class="mb-1">{{ challenge.description }}</p>
+                    <small>Category: {{ challenge.hobby_category }}</small><br>
+                    <small>Created by: {{ challenge.creator_name }}</small><br>
+                    <small>Participants: {{ challenge.participant_count }}</small><br>
+                    <small>Points: {{ challenge.points }}</small><br>
+                    <small>Period: {{ challenge.start_date }} to {{ challenge.end_date }}</small>
+                    <div class="mt-2">
+                        <a href="{{ url_for('join_challenge', challenge_id=challenge.id) }}" 
+                           class="btn btn-sm btn-success">Join Challenge</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h3>My Challenges</h3>
+            <div class="list-group">
+                {% for challenge in my_challenges %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ challenge.title }}</h5>
+                    <p class="mb-1">{{ challenge.description }}</p>
+                    <div class="progress mb-2">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {{ (challenge.current_progress / challenge.target_value * 100)|round }}%">
+                            {{ challenge.current_progress }}/{{ challenge.target_value }}
+                        </div>
+                    </div>
+                    <small>Points Earned: {{ challenge.points_earned }}</small>
+                    <form action="{{ url_for('update_challenge_progress', challenge_id=challenge.id) }}" 
+                          method="POST" class="mt-2">
+                        <div class="input-group">
+                            <input type="number" name="progress" class="form-control form-control-sm" 
+                                   value="{{ challenge.current_progress }}">
+                            <button type="submit" class="btn btn-sm btn-primary">Update Progress</button>
+                        </div>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

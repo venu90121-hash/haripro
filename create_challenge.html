@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Create New Challenge</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">Challenge Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="hobby_category" class="form-label">Hobby Category</label>
+            <input type="text" class="form-control" id="hobby_category" name="hobby_category" required>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="end_date" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date" required>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="target_value" class="form-label">Target Value</label>
+            <input type="number" class="form-control" id="target_value" name="target_value" required>
+            <small class="form-text text-muted">The goal to achieve (e.g., 5 books to read)</small>
+        </div>
+        
+        <div class="mb-3">
+            <label for="points" class="form-label">Points</label>
+            <input type="number" class="form-control" id="points" name="points" required>
+            <small class="form-text text-muted">Points awarded for completing the challenge</small>
+        </div>
+        
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_global" name="is_global">
+            <label class="form-check-label" for="is_global">Make this a global challenge</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Create Challenge</button>
+        <a href="{{ url_for('challenges') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

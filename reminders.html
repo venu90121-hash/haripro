@@ -1,0 +1,29 @@
+<!-- Reminders Section -->
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="reminders-title">
+            <i class="fas fa-bell text-warning"></i>
+            Today's Reminders
+        </h4>
+        <div class="row">
+            {% for reminder in reminders %}
+                {% if reminder.status != 'done' %}
+                    <div class="col-md-4">
+                        <div class="reminder-alert alert {% if reminder.status == 'overdue' %}alert-danger{% elif reminder.status == 'never' %}alert-warning{% else %}alert-info{% endif %}">
+                            <h5 class="alert-heading">{{ reminder.hobby_name }}</h5>
+                            {% if reminder.status == 'never' %}
+                                <p><i class="fas fa-exclamation-circle"></i> Start your journey today!</p>
+                            {% elif reminder.status == 'overdue' %}
+                                <p><i class="fas fa-exclamation-triangle"></i> {{ reminder.days_since_practice }} days since last practice</p>
+                            {% else %}
+                                <p><i class="fas fa-info-circle"></i> Due for practice soon</p>
+                            {% endif %}
+                            <hr>
+                            <p class="mb-0"><i class="fas fa-calendar-alt"></i> Target: {{ reminder.target_days }} days/week</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
