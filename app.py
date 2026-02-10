@@ -1,3 +1,19 @@
+import streamlit as st
+import streamlit.components.v1 as components
+import os
+
+# This is the "bridge" between your HTML and Streamlit
+st.set_page_config(page_title="My Hobby App", layout="wide")
+
+# Read your HTML file
+if os.path.exists("templates/index.html"):
+    with open("templates/index.html", "r", encoding='utf-8') as f:
+        html_content = f.read()
+    
+    # Render the HTML
+    components.html(html_content, height=1000, scrolling=True)
+else:
+    st.error("I can't find your index.html file in the templates folder!")
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
